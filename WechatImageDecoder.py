@@ -71,27 +71,18 @@ class WechatImageDecoder:
     def _decode_unknown_dat(self, dat_file):
         raise Exception('Unknown file type')
 
+def findFile(f):
+    fsinfo = os.listdir(f)
+    for fn in fsinfo:
+        temp_path = os.path.join(f, fn)
+        if not os.path.isdir(temp_path):
+            try:
+                WechatImageDecoder(temp_path)
+            except Exception as e:
+                print(e)
+                sys.exit(1)
 
 if __name__ == '__main__':
     import sys
-    if len(sys.argv) != 2:
-        print('\n'.join([
-            'Usage:',
-            '  python WechatImageDecoder.py [dat_file]',
-            '',
-            'Example:',
-            '  # PC:',
-            '  python WechatImageDecoder.py 1234567890.dat',
-            '',
-            '  # Android:',
-            '  python WechatImageDecoder.py cache.data.10'
-        ]))
-        sys.exit(1)
-
-    _,  dat_file = sys.argv[:2]
-    try:
-        WechatImageDecoder(dat_file)
-    except Exception as e:
-        print(e)
-        sys.exit(1)
+    findFile('./photo')
     sys.exit(0)
